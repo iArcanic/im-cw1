@@ -38,3 +38,12 @@ CREATE TABLE Game (
 	publisher VARCHAR(255),
 	release_date DATE
 );
+
+-- Create Manager table
+CREATE TABLE Manager (
+	manager_id SERIAL PRIMARY KEY,
+	employee_id SERIAL REFERENCES Employee(employee_id),
+	name VARCHAR(255) NOT NULL,
+	date_of_birth DATE,
+	address TEXT
+);
