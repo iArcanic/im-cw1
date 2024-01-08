@@ -28,3 +28,13 @@ CREATE TABLE Transaction (
 	status VARCHAR(20),
 	timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Create Game table
+CREATE TABLE Game (
+	game_id SERIAL PRIMARY KEY,
+	title VARCHAR(255) NOT NULL,
+	rating VARCHAR(10),
+	genre VARCHAR(50)
+	publisher VARCHAR(255),
+	release_date DATE
+);
