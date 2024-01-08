@@ -59,3 +59,12 @@ CREATE TABLE Employee (
 	address TEXT,
 	job_title VARCHAR(255)
 );
+
+-- Create Tournament table
+CREATE TABLE Tournament (
+	tournament_id SERIAL PRIMARY KEY,
+	game_id SERIAL REFERENCES Game(game_id),
+	start_timestamp TIMESTAMP,
+	end_timestamp TIMESTAMP,
+	prize VARCHAR(255)
+);
