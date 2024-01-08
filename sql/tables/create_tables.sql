@@ -83,3 +83,10 @@ CREATE TABLE EmployeeGame (
 	PRIMARY KEY (employee_id, game_id)
 );
 
+-- Create TransactionGame table
+CREATE TABLE TransactionGame (
+	transaction_id SERIAL REFERENCES Transaction(transaction_id),
+	game_id SERIAL REFERENCES Game(game_id),
+	PRIMARY KEY (transaction_id, game_id)
+);
+
