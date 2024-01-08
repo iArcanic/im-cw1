@@ -1,3 +1,5 @@
+-- im-cw1/sql/tables/create_tables.sql
+
 -- Create Player table
 CREATE TABLE Player (
 	player_id SERIAL PRIMARY KEY,
@@ -46,4 +48,14 @@ CREATE TABLE Manager (
 	name VARCHAR(255) NOT NULL,
 	date_of_birth DATE,
 	address TEXT
+);
+
+-- Create Employee table
+CREATE TABLE Employee (
+	employee_id SERIAL PRIMARY KEY,
+	game_id SERIAL REFERENCES Game(game_id),
+	name VARCHAR(255) NOT NULL,
+	date_of_birth DATE,
+	address TEXT,
+	job_title VARCHAR(255)
 );
