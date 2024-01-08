@@ -9,3 +9,11 @@ CREATE TABLE Player (
 	address TEXT
 	username VARCHAR(50) UNIQUE
 );
+
+-- Create Account table
+CREATE TABLE Account (
+	account_id SERIAL PRIMARY KEY,
+	player_id SERIAL REFERENCES Player(player_id)
+	balance DECIMAL(10, 2) DEFAULT 0.0,
+	status VARCHAR(20) DEFAULT 'Active'
+);
