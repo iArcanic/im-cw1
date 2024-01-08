@@ -2,6 +2,7 @@
 
 # Ignore system files
 .DS_Store
+Thumbs.db
 
 # Ignore artifacts and generated files
 *.zip
