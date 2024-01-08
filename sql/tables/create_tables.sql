@@ -75,3 +75,11 @@ CREATE TABLE PlayerGame (
 	game_id SERIAL REFERENCES Game(game_id),
 	PRIMARY KEY (player_id, game_id)
 );
+
+-- Create EmployeeGame table
+CREATE TABLE EmployeeGame (
+	employee_id SERIAL REFERENCES Employee(employee_id),
+	game_id SERIAL REFERENCES Game(game_id),
+	PRIMARY KEY (employee_id, game_id)
+);
+
