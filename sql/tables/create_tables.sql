@@ -68,3 +68,10 @@ CREATE TABLE Tournament (
 	end_timestamp TIMESTAMP,
 	prize VARCHAR(255)
 );
+
+-- Create PlayerGame table
+CREATE TABLE PlayerGame (
+	player_id SERIAL REFERENCES Player(player_id),
+	game_id SERIAL REFERENCES Game(game_id),
+	PRIMARY KEY (player_id, game_id)
+);
