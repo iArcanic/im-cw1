@@ -17,3 +17,8 @@ ADD
 ALTER TABLE PlayerGame
 ADD
     CONSTRAINT fk_playergame_game FOREIGN KEY (game_id) REFERENCES Game(game_id);
+
+-- Employee to Manager (One-to-One)
+ALTER TABLE Manager
+ADD
+    CONSTRAINT fk_manager_employee FOREIGN KEY (employee_id) REFERENCES Employee(employee_id);
