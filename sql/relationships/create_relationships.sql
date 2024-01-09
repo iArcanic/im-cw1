@@ -7,4 +7,13 @@ ADD
 
 ALTER TABLE EmployeeGame
 ADD
-    CONSTAINT fk_employeegame_game FOREIGN KEY (game_id) REFERENCES Game(game_id);
+    CONSTRAINT fk_employeegame_game FOREIGN KEY (game_id) REFERENCES Game(game_id);
+
+-- PlayerGame (Many-to-Many between Player and Game)
+ALTER TABLE PlayerGame
+ADD
+    CONSTRAINT fk_playergame_player FOREIGN KEY (player_id) REFERENCES Player(player_id);
+
+ALTER TABLE PlayerGame
+ADD
+    CONSTRAINT fk_playergame_game FOREIGN KEY (game_id) REFERENCES Game(game_id);
