@@ -27,3 +27,8 @@ ADD
 ALTER TABLE Player
 ADD
     CONSTRAINT fk_player_employee FOREIGN KEY (employee_id) REFERENCES Employee(employee_id);
+
+-- Account to Player (Many-to-One)
+ALTER TABLE Account
+ADD
+    CONSTRAINT fk_account_player FOREIGN KEY (player_id) REFERENCES Player(player_id);
