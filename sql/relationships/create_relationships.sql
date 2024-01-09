@@ -22,3 +22,8 @@ ADD
 ALTER TABLE Manager
 ADD
     CONSTRAINT fk_manager_employee FOREIGN KEY (employee_id) REFERENCES Employee(employee_id);
+
+-- Player to Employee (Many-to-One)
+ALTER TABLE Player
+ADD
+    CONSTRAINT fk_player_employee FOREIGN KEY (employee_id) REFERENCES Employee(employee_id);
