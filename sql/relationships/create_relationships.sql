@@ -18,6 +18,15 @@ ALTER TABLE PlayerGame
 ADD
     CONSTRAINT fk_playergame_game FOREIGN KEY (game_id) REFERENCES Game(game_id);
 
+-- TransactionGame (Many-to-Many between Transaction and Game)
+ALTER TABLE TransactionGame
+ADD
+    CONSTRAINT fk_transactiongame_transaction FOREIGN KEY (transaction_id) REFERENCES Transaction(transaction_id);
+
+ALTER TABLE TransactionGame
+ADD
+    CONSTRAINT fk_transactiongame_game FOREIGN KEY (game_id) REFERENCES Game(game_id);
+
 -- Employee to Manager (One-to-One)
 ALTER TABLE Manager
 ADD
