@@ -1,7 +1,7 @@
 -- im-cw1/sql/views-functions/create_views.sql
 
 -- Admin dashboard view
-CREATE VIEW admin_overview AS
+CREATE OR REPLACE VIEW admin_overview AS
 SELECT
     p.player_id,
     p.name AS player_name,
@@ -40,3 +40,30 @@ FROM player p
     LEFT JOIN playergame pg ON p.player_id = pg.player_id
     LEFT JOIN employee e ON pg.employee_id = e.employee_id
     LEFT JOIN manager m ON e.employee_id = m.employee_id;
+
+-- Player dashboard view
+CREATE OR REPLACE VIEW player_overview AS
+    SELECT
+    p.player_id,
+    p.name AS player_name,
+    p.date_of_birth,
+    p.email,
+    p.address,
+    p.username,
+    a.account_id,
+    a.balance,
+    a.status AS account_status,
+    t.transaction_id,
+    t.amount,
+    t.status AS transaction_status,
+    g.game_id,
+    g.title AS game_title,
+    g.rating,
+    g.genre,
+    g.publisher,
+    g.release_date
+FROM player p
+    JOIN account a ON p.player_id = a.player_id
+    LEFT JOIN transaction t ON a.account_id = t.account_id
+    LEFT JOIN playergame pg ON p.player_id = pg.player_id
+    LEFT JOIN game g ON pg.game_id = g.game_id;
