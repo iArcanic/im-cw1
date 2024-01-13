@@ -29,3 +29,18 @@ INT) RETURNS INT AS
 	END;
 	$$ LANGUAGE
 plpgsql; 
+
+-- Function to get the average rating of games in a given source
+CREATE OR REPLACE FUNCTION get_average_rating_by_genre
+(genre VARCHAR) RETURNS DECIMAL AS 
+	$$ DECLARE avg_rating DECIMAL;
+	BEGIN
+	SELECT
+	    AVG (rating) INTO avg_rating
+	FROM Game
+	WHERE
+	    genre = get_average_rating_by_genre.genre;
+	RETURN avg_rating;
+	END;
+	$$ LANGUAGE
+plpgsql; 
