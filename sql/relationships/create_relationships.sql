@@ -42,3 +42,8 @@ ADD
 ALTER TABLE Transaction
 ADD
     CONSTRAINT fk_transaction_manager FOREIGN KEY (manager_id) REFERENCES Manager(manager_id);
+
+-- Game to Tournament (One-to-Many)
+ALTER TABLE Tournament
+ADD
+    CONSTRAINT fk_tournament_game FOREIGN KEY (game_id) REFERENCES Game(game_id);
