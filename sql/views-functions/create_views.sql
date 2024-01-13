@@ -114,3 +114,17 @@ SELECT
 FROM Employee e
     JOIN Transaction t ON e.employee_id = t.manager_id
     JOIN Player p ON t.player_id = p.player_id;
+
+CREATE VIEW game_inventory AS
+SELECT
+    g.game_id,
+    g.title,
+    g.publisher,
+    COUNT(tg.transaction_id) AS total_sold,
+    COUNT(tg.transaction_id) AS remaining_stock
+FROM Game g
+    LEFT JOIN TransactionGame tg ON g.game_id = tg.game_id
+GROUP BY
+    g.game_id,
+    g.title,
+    g.publisher;
