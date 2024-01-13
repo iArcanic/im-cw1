@@ -37,3 +37,8 @@ ADD
 ALTER TABLE Transaction
 ADD
     CONSTRAINT fk_transaction_account FOREIGN KEY (account_id) REFERENCES Account(account_id);
+
+-- Transaction to Manager (Many-to-One)
+ALTER TABLE Transaction
+ADD
+    CONSTRAINT fk_transaction_manager FOREIGN KEY (manager_id) REFERENCES Manager(manager_id);
