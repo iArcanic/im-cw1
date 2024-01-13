@@ -32,3 +32,8 @@ ADD
 ALTER TABLE Account
 ADD
     CONSTRAINT fk_account_player FOREIGN KEY (player_id) REFERENCES Player(player_id);
+
+-- Transaction to Account (Many-to-One)
+ALTER TABLE Transaction
+ADD
+    CONSTRAINT fk_transaction_account FOREIGN KEY (account_id) REFERENCES Account(account_id);
