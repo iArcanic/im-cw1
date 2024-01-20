@@ -1,3 +1,8 @@
+-- Create schema
+
+-- game_schema
+CREATE SCHEMA game_schema;
+
 -- Create tables
 
 -- Create Game table
