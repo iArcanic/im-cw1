@@ -47,7 +47,7 @@ CREATE TABLE TransactionGame (
 
 -- Create Account table
 CREATE TABLE Account (
-    account_id SERIAL PRIMARY KEY, player_id SERIAL REFERENCES Player (player_id) balance DECIMAL(10, 2) DEFAULT 0.0, status VARCHAR(20) DEFAULT 'Active'
+    account_id SERIAL PRIMARY KEY, player_id SERIAL REFERENCES Player (player_id), balance DECIMAL(10, 2) DEFAULT 0.0, status VARCHAR(20) DEFAULT 'Active'
 );
 
 -- Create relationships
