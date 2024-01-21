@@ -37,12 +37,70 @@ Key deliverables from this project include:
 
 ## 2.5 Game catalog
 
+## 2.6 Approve transactions
+
+## 2.7 Purchase games
+
 # 3 Data model
+
+## 3.1 Entity-Relationship Diagram (ERD)
+
+The data model was designed using an Entity-Relationship Diagram (ERD) approach, which helps to represent the key entities and define the relationships between them.
+
+See Appendix []() for the ERD.
+
+## 3.2 Entities
+
+The core entities identified for this scenario are separated into distinct categories called schema. Each schema is a collection of these database entities. It helps to assign specific roles to a certain schema, visually clarify the purpose and belonging of entities, and can be managed much more easily.
+
+### 3.2.1 Player schema
+
+#### 3.2.2.1 Players
+
+### 3.2.2 Accounts schema
+
+#### 3.2.2.1 PlayerAccounts
+
+#### 3.2.2.2 InGamePlayerAccounts
+
+### 3.2.3 GameSchema
+
+#### 3.2.3.1 Games
+
+### 3.2.4 EmployeeSchema
+
+#### 3.2.4.1 Employees
+
+#### 3.2.4.2 PlayerSupport
+
+### 3.2.5 TransactionsSchema
+
+#### 3.2.5.1 GameTransactions
+
+#### 3.2.5.2 InGameTransactions
+
+#### 3.2.5.3 TransactionsApprovals
+
+### 3.2.6 ESportsSchema
+
+#### 3.2.6.1 Teams
+
+#### 3.2.6.2 Tournaments
+
+#### 3.2.6.3 TeamPlayers
+
+#### 3.2.6.4 MatchResults
+
+## 3.3 Entity relationships
 
 # 4 Implementation
 
 # 5 GDPR compliance
 
 # 6 Appendices
+
+## 6.1 Link to GitHub repository
+
+[Gaming Platform Database Backend (im-cw1)](https://github.com/iArcanic/im-cw1)
 
 # 7 References
