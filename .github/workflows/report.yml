@@ -45,10 +45,10 @@ jobs:
     - name: Compile Markdown to PDF
       run: |
         timestamp=$(date +"%Y%m%d%H%M%S")
-        pandoc gaming-db-report.md --filter pandoc-citeproc -o "gaming-db-report-${{ steps.timestamp.outputs.timestamp }}.pdf"
+        pandoc report/gaming-db-report.md --filter pandoc-citeproc -o "gaming-db-report-${{ steps.timestamp.outputs.timestamp }}.pdf"
 
     - name: Upload PDF artifact
       uses: actions/upload-artifact@v2
       with:
         name: pdf-artifact
-        path: "gaming-db-report-${{ steps.timestamp.outputs.timestamp }}.pdf"
+        path: "report/gaming-db-report-${{ steps.timestamp.outputs.timestamp }}.pdf"
