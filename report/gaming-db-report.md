@@ -27,14 +27,22 @@ Key deliverables from this project include:
 
 # 2 User journeys
 
+## 2.1 Player dashboard
+
+## 2.2 Support tickets
+
+## 2.3 Manager dashboard
+
+## 2.4 Payment history
+
+## 2.5 Game catalog
+
 # 3 Data model
 
 # 4 Implementation
 
 # 5 GDPR compliance
 
-# 6 Conclusion
+# 6 Appendices
 
-# 7 Appendices
-
-# 8 References
+# 7 References
