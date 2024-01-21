@@ -51,4 +51,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: pdf-artifact
-        path: "report/gaming-db-report-${{ steps.timestamp.outputs.timestamp }}.pdf"
+        path: "gaming-db-report-${{ steps.timestamp.outputs.timestamp }}.pdf"
