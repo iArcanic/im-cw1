@@ -79,13 +79,13 @@ The core entities identified for this scenario are separated into distinct categ
 
 #### 3.2.5.2 InGameTransactions
 
-#### 3.2.5.3 TransactionsApprovals
+#### 3.2.5.3 TransactionApprovals
 
 ### 3.2.6 ESportsSchema
 
-#### 3.2.6.1 Teams
+#### 3.2.6.1 Tournaments
 
-#### 3.2.6.2 Tournaments
+#### 3.2.6.2 Teams
 
 #### 3.2.6.3 TeamPlayers
 
@@ -94,6 +94,44 @@ The core entities identified for this scenario are separated into distinct categ
 ## 3.3 Entity relationships
 
 # 4 Implementation
+
+## 4.1 Player schema
+
+### 4.1.1 Players
+
+## 4.2 Accounts schema
+
+### 4.2.1 PlayerAccounts
+
+### 4.2.2 InGamePlayerAccounts
+
+## 4.3 Game schema
+
+### 4.3.1 Games
+
+## 4.4 EmployeesSchema
+
+### 4.4.1 Employees
+
+### 4.4.2 PlayerSupport
+
+## 4.5 TransactionsSchema
+
+### 4.5.1 GameTransactions
+
+### 4.5.2 InGameTransactions
+
+### 4.5.3 TransactionApprovals
+
+## 4.6 ESportsSchema
+
+### 4.6.1 Tournaments
+
+### 4.6.2 Teams
+
+### 4.6.3 TeamPlayers
+
+### 4.6.4 MatchResults
 
 # 5 GDPR compliance
 
