@@ -32,7 +32,7 @@ The online gaming platform facilitates a variety of features and interactions be
 
 All user journeys are implemented using PostgreSQL views, functions, and procedures. The advantage of this is that a combination of SQL statements can be modularised and run as a collection, rather than manual execution one by one.
 
-Note that this does not mean any UI implementation, as mentioned in [1](#1-introduction). Only the relevant business logic is considered.
+Note that this does not mean any UI implementation, as mentioned in [1 Introduction](#1-introduction). Only the relevant business logic is considered.
 
 ## 2.1 Player dashboard
 
@@ -88,6 +88,8 @@ The core entities identified for this scenario are separated into distinct categ
 CREATE SCHEMA PlayerSchema;
 ```
 
+This database schema is dedicated to holding user-entity tables, such as `Players` in this instance. The main aim is to segregate personal data, which may be sensitive and cannot traverse across a span of tables or be accessed by unathorised roles. Allows for easier management of access controls and security policies due to there being only a singular table, and thus, more readily abide by GDPR laws.
+
 #### 3.2.2.1 Players
 
 ```sql
@@ -101,6 +103,8 @@ CREATE TABLE IF NOT EXISTS PlayerSchema.Players (
     RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+
+The `Players` table stores personal information about their user, which is categoried as sensitive. The `Password` attribute will undoubtedly be hashed with a robust cryptographic function. `Fullname` can serve as a secondary index to quickly search players. `DateOfBirth` can serve as a restriction when purchasing games with an "18+" age rating for example. Finally, `Email`` is how the online gaming platform contacts the user and is the primary source of contact.
 
 ### 3.2.2 Accounts schema
 
