@@ -41,7 +41,7 @@ Key deliverables from this project include:
 
 ## 2.7 Purchase games
 
-# 3 Data model
+# 3 Data model implementation
 
 ## 3.1 Entity-Relationship Diagram (ERD)
 
@@ -93,52 +93,18 @@ The core entities identified for this scenario are separated into distinct categ
 
 ## 3.3 Entity relationships
 
-# 4 Implementation
+## 3.4 Roles and permissions
 
-## 4.1 Player schema
+## 3.5 Views
 
-### 4.1.1 Players
+## 3.6 Functions and procedures
 
-## 4.2 Accounts schema
+# 4 GDPR compliance
 
-### 4.2.1 PlayerAccounts
+# 5 Appendices
 
-### 4.2.2 InGamePlayerAccounts
-
-## 4.3 Game schema
-
-### 4.3.1 Games
-
-## 4.4 EmployeesSchema
-
-### 4.4.1 Employees
-
-### 4.4.2 PlayerSupport
-
-## 4.5 TransactionsSchema
-
-### 4.5.1 GameTransactions
-
-### 4.5.2 InGameTransactions
-
-### 4.5.3 TransactionApprovals
-
-## 4.6 ESportsSchema
-
-### 4.6.1 Tournaments
-
-### 4.6.2 Teams
-
-### 4.6.3 TeamPlayers
-
-### 4.6.4 MatchResults
-
-# 5 GDPR compliance
-
-# 6 Appendices
-
-## 6.1 Link to GitHub repository
+## 5.1 Link to GitHub repository
 
 [Gaming Platform Database Backend (im-cw1)](https://github.com/iArcanic/im-cw1)
 
-# 7 References
+# 6 References
