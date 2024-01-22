@@ -61,6 +61,18 @@ CREATE SCHEMA PlayerSchema;
 
 #### 3.2.2.1 Players
 
+```sql
+CREATE TABLE IF NOT EXISTS PlayerSchema.Players (
+    PlayerID SERIAL PRIMARY KEY,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    Password VARCHAR(100) NOT NULL,
+    Fullname VARCHAR(255) NOT NULL,
+    DateOfBirth DATE, Address TEXT,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
 ### 3.2.2 Accounts schema
 
 ```sql
@@ -69,7 +81,25 @@ CREATE SCHEMA AccountSchema;
 
 #### 3.2.2.1 PlayerAccounts
 
+```sql
+CREATE TABLE IF NOT EXISTS AccountSchema.PlayerAccounts (
+    PlayerAccountID SERIAL PRIMARY KEY,
+    PlayerID SERIAL,
+    Balance DECIMAL(10, 2) DEFAULT 0.00
+);
+```
+
 #### 3.2.2.2 InGamePlayerAccounts
+
+```sql
+CREATE TABLE IF NOT EXISTS AccountSchema.InGamePlayerAccounts (
+    InGamePlayerAccountID SERIAL PRIMARY KEY,
+    PlayerID SERIAL,
+    GameID SERIAL,
+    Balance DECIMAL(10, 2) DEFAULT 0.00,
+    UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
 ### 3.2.3 GameSchema
 
@@ -79,6 +109,16 @@ CREATE SCHEMA GameSchema;
 
 #### 3.2.3.1 Games
 
+```sql
+CREATE TABLE IF NOT EXISTS GameSchema.Games (
+    GameID SERIAL PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Rating VARCHAR(10), Genre VARCHAR(50),
+    Publisher VARCHAR(255),
+    ReleaseDate DATE
+);
+```
+
 ### 3.2.4 EmployeeSchema
 
 ```sql
@@ -87,7 +127,25 @@ CREATE SCHEMA EmployeeSchema;
 
 #### 3.2.4.1 Employees
 
+```sql
+CREATE TABLE IF NOT EXISTS EmployeeSchema.Employees (
+    EmployeeID SERIAL PRIMARY KEY,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    Fullname VARCHAR(255) NOT NULL
+);
+```
+
 #### 3.2.4.2 PlayerSupport
+
+```sql
+CREATE TABLE IF NOT EXISTS EmployeeSchema.PlayerSupport (
+    PlayerSupportID SERIAL PRIMARY KEY,
+    EmployeeID SERIAL,
+    PlayerID SERIAL,
+    Notes TEXT,
+    UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
 ### 3.2.5 TransactionsSchema
 
@@ -97,9 +155,51 @@ CREATE SCHEMA TransactionsSchema;
 
 #### 3.2.5.1 GameTransactions
 
+```sql
+CREATE TABLE IF NOT EXISTS TransactionSchema.GameTransactions (
+    GameTransactionID SERIAL PRIMARY KEY,
+    PlayerAccountID SERIAL,
+    GameID SERIAL,
+    Amount DECIMAL(10, 2) NOT NULL,
+    TransactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
 #### 3.2.5.2 InGameTransactions
 
-#### 3.2.5.3 TransactionApprovals
+```sql
+CREATE TABLE IF NOT EXISTS TransactionSchema.InGameTransactions (
+    InGameTransactionID SERIAL PRIMARY KEY,
+    InGamePlayerAccountID SERIAL,
+    GameID SERIAL,
+    Amount DECIMAL(10, 2) NOT NULL,
+    TransactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 3.2.5.3 GameTransactionApprovals
+
+```sql
+CREATE TABLE IF NOT EXISTS TransactionSchema.GameTransactionApprovals (
+    GameTransactionApprovalID SERIAL PRIMARY KEY,
+    GameTransactionID SERIAL,
+    EmployeeID SERIAL,
+    ApprovalStatus ApprovalStatus NOT NULL,
+    UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 3.2.5.4 InGameTransactionApprovals
+
+```sql
+CREATE TABLE IF NOT EXISTS TransactionSchema.InGameTransactionApprovals (
+    InGameTransactionApprovalID SERIAL PRIMARY KEY,
+    InGameTransactionID SERIAL,
+    EmployeeID SERIAL,
+    ApprovalStatus ApprovalStatus NOT NULL,
+    UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
 ### 3.2.6 ESportsSchema
 
@@ -109,11 +209,45 @@ CREATE SCHEMA ESportsSchema;
 
 #### 3.2.6.1 Tournaments
 
+```sql
+CREATE TABLE IF NOT EXISTS ESportsSchema.Tournament (
+    TournamentID SERIAL PRIMARY KEY,
+    GameID SERIAL,
+    TournamentName VARCHAR(255) NOT NULL,
+    StartDate TIMESTAMP,
+    EndDate TIMESTAMP
+);
+```
+
 #### 3.2.6.2 Teams
+
+```sql
+CREATE TABLE IF NOT EXISTS ESportsSchema.Teams (
+    TeamID SERIAL PRIMARY KEY,
+    TeamName VARCHAR(255) NOT NULL
+);
+```
 
 #### 3.2.6.3 TeamPlayers
 
-#### 3.2.6.4 MatchResults
+```sql
+CREATE TABLE IF NOT EXISTS ESportsSchema.TeamPlayers (
+    TeamPlayerID SERIAL PRIMARY KEY,
+    TeamID SERIAL,
+    PlayerID SERIAL
+);
+```
+
+#### 3.2.6.4 TournamentResults
+
+```sql
+CREATE TABLE IF NOT EXISTS ESportsSchema.TournamentResults (
+    TournamentResultID SERIAL PRIMARY KEY,
+    TournamentID SERIAL,
+    TeamID SERIAL,
+    TournamentResultStatus TournamentResultStatus NOT NULL
+);
+```
 
 ## 3.3 Entity relationships
 

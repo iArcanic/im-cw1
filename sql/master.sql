@@ -1,10 +1,10 @@
 -- Turn on quit when error
-\set ON_ERROR_STOP on 
+\set ON_ERROR_STOP on
 -- CREATE DATABASE
 CREATE DATABASE gamingplatform;
 
 -- USE DATABASE
-\c gamingplatform 
+\c gamingplatform
 -- SCHEMA CREATION
 CREATE SCHEMA PlayerSchema;
 
