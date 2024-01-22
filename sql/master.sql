@@ -1,3 +1,12 @@
+-- Turn on quit when error
+\set ON_ERROR_STOP on
+
+-- CREATE DATABASE 
+CREATE DATABASE gamingplatform;
+
+-- USE DATABASE
+\c gamingplatform
+
 -- SCHEMA CREATION
 CREATE SCHEMA PlayerSchema;
 CREATE SCHEMA AccountSchema;
@@ -318,3 +327,5 @@ EXCEPTION
 END;
 END;
 $$ LANGUAGE plpgsql;
+
+\echo "Successfully migrated database"
