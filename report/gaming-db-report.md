@@ -5,6 +5,7 @@ bibliography: report/references.bib
 toc: true
 toc-title: Table of Contents
 toc-depth: 3
+geometry: "left=1.25cm, right=1.25cm, top=1.25cm, bottom=1.25cm"
 csl: report/harvard-imperial-college-london.csl
 ---
 
@@ -27,19 +28,47 @@ Key deliverables from this project include:
 
 # 2 User journeys
 
+The online gaming platform facilitates a variety of features and interactions between players, games, and administrators. Along with this, comes the assumption of key workflows to streamline to sandbox a certain functionality – readily and easily executed when needed. This section outlines the high-level user journeys that the various user groups take to accomplish their objectives within the system.
+
+All user journeys are implemented using PostgreSQL views, functions, and procedures. The advantage of this is that a combination of SQL statements can be modularised and run as a collection, rather than manual execution one by one.
+
+Note that this does not mean any UI implementation, as mentioned in [1](#1-introduction). Only the relevant business logic is considered.
+
 ## 2.1 Player dashboard
 
-## 2.2 Support tickets
+The player dashboard provides an overarching interface where they can view information about their account. Upon logging in, they can see their corresponding player ID, their selected username, and the balance of both their game and in-game accounts.
 
-## 2.3 Manager dashboard
+See []() for details on implementation.
 
-## 2.4 Payment history
+## 2.2 Manager dashboard
 
-## 2.5 Game catalog
+The manager dashboard, similar to the player dashboard, provides business-specific analytics and useful performance statistics across aspects of the gaming platform. It means that managers or any administrative roles can make well-informed data-driven decisions that may commercially impact the business. Such information present on the dashboard includes information on all players – their account details and game/in-game balances.
 
-## 2.6 Approve transactions
+See []() for details on implementation.
 
-## 2.7 Purchase games
+## 2.3 Payment history
+
+This functionality enables players to view and reconcile all financial transactions relating to their game and in-game accounts. Since there are different types of transactions with different currencies, the movement of that money creates an auditable trail that should be captured. This financial activity display will consist of the transaction's timestamp, amount, approval status, the game, and the player it concerns.
+
+See []() for details on implementation.
+
+## 2.4 Game catalog
+
+The game catalog showcases the portfolio of all available game titles on the platform that the company advertises. It serves as both a marketing platform as well as players browsing for new games to play. Details about the game, its title, genre, and release date will give players clear expectations. Furthermore, players can rank games by their rating and/or popularity.
+
+See []() for details on implementation.
+
+## 2.5 Approve transactions
+
+This is mainly for managers to review and authorise privileged transactions on the gaming platform. Requiring manager approval before allowing transfers over secure communications is vital for a streamlined gaming platform and provides an additional point of control. This will set the transaction's status in transit to be set to "Approved" status and signed off by the relevant employee – who must be a manager of course.
+
+See []() for details on implementation.
+
+## 2.6 Purchase games
+
+This user journey is the core monetisation point of the platform, allowing players to select a specific game from the Game Catalog for example. Once a player decides which game they would like to purchase, it appropriately debits and updates their balance, whilst also making a new transaction record. Upon buying and downloading, post-processing actions may be distributing the required license keys or download links. A payment receipt is also returned to the user with the right details.
+
+See []() for details on implementation.
 
 # 3 Data model implementation
 
@@ -261,7 +290,7 @@ CREATE TABLE IF NOT EXISTS ESportsSchema.TournamentResults (
 
 # 5 Appendices
 
-## 5.1 Link to GitHub repository
+## 5.1 GitHub repository
 
 [Gaming Platform Database Backend (im-cw1)](https://github.com/iArcanic/im-cw1)
 
