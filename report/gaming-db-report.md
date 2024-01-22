@@ -55,9 +55,17 @@ The core entities identified for this scenario are separated into distinct categ
 
 ### 3.2.1 Player schema
 
+```sql
+CREATE SCHEMA PlayerSchema;
+```
+
 #### 3.2.2.1 Players
 
 ### 3.2.2 Accounts schema
+
+```sql
+CREATE SCHEMA AccountSchema;
+```
 
 #### 3.2.2.1 PlayerAccounts
 
@@ -65,15 +73,27 @@ The core entities identified for this scenario are separated into distinct categ
 
 ### 3.2.3 GameSchema
 
+```sql
+CREATE SCHEMA GameSchema;
+```
+
 #### 3.2.3.1 Games
 
 ### 3.2.4 EmployeeSchema
+
+```sql
+CREATE SCHEMA EmployeeSchema;
+```
 
 #### 3.2.4.1 Employees
 
 #### 3.2.4.2 PlayerSupport
 
 ### 3.2.5 TransactionsSchema
+
+```sql
+CREATE SCHEMA TransactionsSchema;
+```
 
 #### 3.2.5.1 GameTransactions
 
@@ -82,6 +102,10 @@ The core entities identified for this scenario are separated into distinct categ
 #### 3.2.5.3 TransactionApprovals
 
 ### 3.2.6 ESportsSchema
+
+```sql
+CREATE SCHEMA ESportsSchema;
+```
 
 #### 3.2.6.1 Tournaments
 
