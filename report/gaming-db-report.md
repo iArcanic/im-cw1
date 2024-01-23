@@ -546,6 +546,29 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ESportsSchema TO ManagerRole;
 
 Tournaments need to be conducted by administrators, i.e. managers, so they need to be able to have insight into registration trends, event data, and prize pools to allow for more engagement.
 
+# 4 GDPR compliance
+
+Several database designs and they equivalent PostgreSQL implementations have been taken into consideration to ensure General Data Protection Regulation (GDPR) compliance, but the most important is encryption.
+
+As mentioned before, although it is outside the scope of the implementation requirements, the hashing function will encrypt the password ([see 3.2.2.1 Players](#3221-players)).
+
+However, within the `postgresql.conf` file, appropriate encryption options have been added:
+
+```bash
+password_encryption = 'scram-sha-256'
+
+ssl = on
+
+row_security = on
+
+ssl_cert_file = '/path/to/server.crt'
+ssl_key_file = '/path/to/server.key'
+ssl_ca_file = '/path/to/ca.crt'
+krb_server_keyfile = '/path/to/krb5.keytab'
+```
+
+These relevant arguments ensure that the database is encrypted, however, it is up to the PostgreSQL user to provide their own encryption keys.
+
 # 5 Appendices
 
 ## 5.1 GitHub repository
