@@ -121,11 +121,11 @@ CREATE TABLE IF NOT EXISTS TransactionSchema.InGameTransactions (
 );
 
 CREATE TABLE IF NOT EXISTS TransactionSchema.GameTransactionApprovals (
-    GameTransactionApprovalID SERIAL PRIMARY KEY, GameTransactionID SERIAL, EmployeeID SERIAL, ApprovalStatus ApprovalStatus NOT NULL, UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    GameTransactionApprovalID SERIAL PRIMARY KEY, GameTransactionID SERIAL, EmployeeID SERIAL, ApprovalStatus ApprovalStatus NOT NULL DEFAULT 'Pending', UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS TransactionSchema.InGameTransactionApprovals (
-    InGameTransactionApprovalID SERIAL PRIMARY KEY, InGameTransactionID SERIAL, EmployeeID SERIAL, ApprovalStatus ApprovalStatus NOT NULL, UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    InGameTransactionApprovalID SERIAL PRIMARY KEY, InGameTransactionID SERIAL, EmployeeID SERIAL, ApprovalStatus ApprovalStatus NOT NULL DEFAULT 'Pending', UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS EmployeeSchema.Employees (

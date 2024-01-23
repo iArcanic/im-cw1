@@ -207,9 +207,7 @@ This table is akin to a support ticket system, storing details about any players
 
 ### 3.2.5 TransactionsSchema
 
-```sql
-CREATE SCHEMA TransactionsSchema;
-```
+The `TransactionsSchema` consists of all payment-related tables. This schema has to be secure since handling payments has sensitive information, even if it isn't explicitly attributed to that entity – they can be inferred from the foreign key relations.
 
 #### 3.2.5.1 GameTransactions
 
@@ -223,6 +221,8 @@ CREATE TABLE IF NOT EXISTS TransactionSchema.GameTransactions (
 );
 ```
 
+Similar with the logic in differentiating game and in-game entities, `GameTransaction` is the record of all game purchases with real-life money only. After the unique ID of `GameTransactionID`, two foreign key references are made. One referencing the correlating `PlayerAccountID`, i.e. the player who initiated the transaction with their purchase in the first place. The other, `GameID`, links the game that the player wants to purchase. The `Amount` attribute, of course, is the cost being transferred. And last but not least, the `TransactionDate` takes the current timestamp of when this record was committed.
+
 #### 3.2.5.2 InGameTransactions
 
 ```sql
@@ -235,6 +235,8 @@ CREATE TABLE IF NOT EXISTS TransactionSchema.InGameTransactions (
 );
 ```
 
+Similar to the previous transaction entity (see [3.2.5.1 GameTransactions](#3251-gametransactions)) except for purchases made using the in-game built-in currency. This time, instead, it takes a foreign key relation to the player's in-game account to use that balance, rather than the `PlayerAccount`.
+
 #### 3.2.5.3 GameTransactionApprovals
 
 ```sql
@@ -242,10 +244,18 @@ CREATE TABLE IF NOT EXISTS TransactionSchema.GameTransactionApprovals (
     GameTransactionApprovalID SERIAL PRIMARY KEY,
     GameTransactionID SERIAL,
     EmployeeID SERIAL,
-    ApprovalStatus ApprovalStatus NOT NULL,
+    ApprovalStatus ApprovalStatus NOT NULL DEFAULT 'Pending',
     UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+
+Here, this table consists of the approval for transactions for the games only, made with real-life money of course. Foreign key relations are defined, linking the correct `GameTransaction` that needs approval, the assigned `Employee` (a `Manager`), and the date timestamp. it was approved, via `UpdatedDate`.
+
+```sql
+CREATE TYPE ApprovalStatus AS ENUM('Pending', 'Approved', 'Rejected');
+```
+
+An enumeration is created for the `ApprovalStatus`, meaning that it can only take one of the three above states. Only a `Manager` can alter the transaction state, and if so, it has to conform to these three values, with a default state of "Pending" if not yet approved by a `Manager`.
 
 #### 3.2.5.4 InGameTransactionApprovals
 
@@ -254,10 +264,12 @@ CREATE TABLE IF NOT EXISTS TransactionSchema.InGameTransactionApprovals (
     InGameTransactionApprovalID SERIAL PRIMARY KEY,
     InGameTransactionID SERIAL,
     EmployeeID SERIAL,
-    ApprovalStatus ApprovalStatus NOT NULL,
+    ApprovalStatus ApprovalStatus NOT NULL DEFAULT 'Pending',
     UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+
+Again, similar to `GameTransactionApprovals` (see [3.2.5.3 GameTransactionApprovals](#3253-gametransactionapprovals)), but the in-game counterpart. Here instead, a reference to the `InGameTransaction` is made, relating the correct transaction that was made with the game's currency.
 
 ### 3.2.6 ESportsSchema
 
