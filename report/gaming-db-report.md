@@ -378,27 +378,35 @@ Similarly, Players are only allowed to view any `Tournaments`, `Teams`, and the 
 CREATE ROLE EmployeeRole;
 ```
 
-This represents all least privileged personnel who run the
+This represents all least privileged personnel who run the gaming platform that run various business support operations, such as player assistance, player account management, security audits, and payment administration. They have a wider scope of privileges, but still restricted (they are not the most privileged role).
 
 ```sql
 GRANT SELECT, INSERT, UPDATE ON ALL TABLES
 IN SCHEMA EmployeeSchema TO EmployeeRole;
 ```
 
+Full CRUD access is given to `Employees`, like players, to manage their own personal data in order to be compliant with GDPR laws. This is supported by the following SQL statements, like `SELECT`, `INSERT`, and `UPDATE` as this is their own entity master table.
+
 ```sql
 GRANT SELECT, INSERT, UPDATE ON ALL TABLES
 IN SCHEMA PlayerSchema TO EmployeeRole;
 ```
+
+Employees are also given full access to the `PlayerSchema` table, since the employees assist players with any issues. This also means that they need access to the player's data so they can use usage trends and metric for company improvements.
 
 ```sql
 GRANT SELECT, INSERT, UPDATE ON ALL TABLES
 IN SCHEMA AccountSchema TO EmployeeRole;
 ```
 
+Again, employees are given access to player accounts for providing support in financial workflows like resolving disputes or general payment enquiries. The `INSERT` and `UPDATE` command is enabled for providing refunds or bonuses for example.
+
 ```sql
 GRANT SELECT, INSERT ON ALL TABLES
 IN SCHEMA TransactionSchema TO EmployeeRole;
 ```
+
+For the `TransactionSchema`, the `SELECT` and `INSERT` role is only granted – for auditing reasons. This is to trace failed or fraudulent transactions and update their status accordingly.
 
 ### 3.5.3 ManagerRole
 
