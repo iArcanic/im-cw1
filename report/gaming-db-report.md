@@ -252,7 +252,9 @@ CREATE TABLE IF NOT EXISTS TransactionSchema.GameTransactionApprovals (
 Here, this table consists of the approval for transactions for the games only, made with real-life money of course. Foreign key relations are defined, linking the correct `GameTransaction` that needs approval, the assigned `Employee` (a `Manager`), and the date timestamp. it was approved, via `UpdatedDate`.
 
 ```sql
-CREATE TYPE ApprovalStatus AS ENUM('Pending', 'Approved', 'Rejected');
+CREATE TYPE ApprovalStatus AS ENUM(
+    'Pending', 'Approved', 'Rejected'
+);
 ```
 
 An enumeration is created for the `ApprovalStatus`, meaning that it can only take one of the three above states. Only a `Manager` can alter the transaction state, and if so, it has to conform to these three values, with a default state of "Pending" if not yet approved by a `Manager`.
@@ -277,6 +279,8 @@ Again, similar to `GameTransactionApprovals` (see [3.2.5.3 GameTransactionApprov
 CREATE SCHEMA ESportsSchema;
 ```
 
+Although this schema is not vital to the regular functioning of the online gaming system, it serves more as a proof of concept demonstrating the scalability of such a database design. The schema is to do with the more competitive side that the gaming platform may want to feature along with the many games that they have. This takes inspiration from real e-sports tournaments, the way that they are structures, and the way that they are conducted.
+
 #### 3.2.6.1 Tournaments
 
 ```sql
@@ -289,6 +293,8 @@ CREATE TABLE IF NOT EXISTS ESportsSchema.Tournament (
 );
 ```
 
+A master table of this schema, holding `Tournament` entities. Since tournaments are based on a singular game, it needs a reference to that specific game, so a foreign key reference, `GameID`, is made. The tournament needs a descriptive name, so hence the attribute `TournamentName`. A duration is taken, and is defined by the `StartDate` and `EndDate`. Note that these do not take the `DATE` data type but rather a `TIMESTAMP` instead, since e-sports tournaments are very strict on rules regarding timeliness.
+
 #### 3.2.6.2 Teams
 
 ```sql
@@ -297,6 +303,8 @@ CREATE TABLE IF NOT EXISTS ESportsSchema.Teams (
     TeamName VARCHAR(255) NOT NULL
 );
 ```
+
+Typically, in e-sport tournaments, players compete in pre-determined teams. Therefore, this master table represents just that. A unique ID of `TeamID` is taken, along with a name the team might have for themselves in `TeamName`.
 
 #### 3.2.6.3 TeamPlayers
 
@@ -308,6 +316,8 @@ CREATE TABLE IF NOT EXISTS ESportsSchema.TeamPlayers (
 );
 ```
 
+Since teams are comprised of a collection of players, a separate entity, `TeamPlayers`, needs to define this separately – not just use the `PlayerEntity` on its own. Rather, after the primary key `TeamPlayerID` has been assigned, it takes foreign relations of `TeamID` and `PlayerID`. The former representing the team to which the player belongs too, and the later referencing the actual `Player` object.
+
 #### 3.2.6.4 TournamentResults
 
 ```sql
@@ -318,6 +328,16 @@ CREATE TABLE IF NOT EXISTS ESportsSchema.TournamentResults (
     TournamentResultStatus TournamentResultStatus NOT NULL
 );
 ```
+
+After a tournament has finished, a results table needs to be compiled containing details of each team's performance. This means the correct `Tournament` has to be linked to this record as a foreign key specifically, along with the team competed via the `TournamentID` and `TeamID` respectively.
+
+```sql
+CREATE TYPE TournamentResultStatus AS ENUM(
+ 'First', 'Second', 'Third', 'Discontinued'
+);
+```
+
+As before, here is an enumeration for each teams result status. Currently, it has been set to these four values – which the attribute in the table has to conform to, however, this can easily be scalable. More result parameters can be added as and when required, such as more finishing positions or a Prize enumeration.
 
 ## 3.5 Roles and permissions
 
