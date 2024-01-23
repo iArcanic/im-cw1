@@ -546,8 +546,6 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ESportsSchema TO ManagerRole;
 
 Tournaments need to be conducted by administrators, i.e. managers, so they need to be able to have insight into registration trends, event data, and prize pools to allow for more engagement.
 
-# 4 GDPR compliance
-
 # 5 Appendices
 
 ## 5.1 GitHub repository
