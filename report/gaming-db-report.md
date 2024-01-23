@@ -146,17 +146,22 @@ This table is when the player makes an account specific only to that game. As se
 CREATE SCHEMA GameSchema;
 ```
 
+The `GameSchema`, similar to the `PlayerSchema`, only has one table and this is beneficial in assigning only the relevant permissions required. Any game-related tables are under this schema, making it only more scalable in the future, if the company decides to incorporate more game-specific features. This means that other schemas are not affected and disturbed – the roles, permissions, and relationships remain the same regardless.
+
 #### 3.2.3.1 Games
 
 ```sql
 CREATE TABLE IF NOT EXISTS GameSchema.Games (
     GameID SERIAL PRIMARY KEY,
     Title VARCHAR(255) NOT NULL,
-    Rating VARCHAR(10), Genre VARCHAR(50),
+    Rating VARCHAR(10),
+    Genre VARCHAR(50),
     Publisher VARCHAR(255),
     ReleaseDate DATE
 );
 ```
+
+Like the `Player` entity, the `Game` is also a master table since it has no foreign key relations. A unique ID of `GameID` differentiates each `Game`. A `Title` by which the game is referenced, and can even serve as a secondary index for fast searching. The `Rating`, `Genre`, and `ReleaseDate` properties are fields by which the user can filter for games easily (see [2.4 Game catalog](#24-game-catalog)).
 
 ### 3.2.4 EmployeeSchema
 
