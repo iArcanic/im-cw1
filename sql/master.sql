@@ -236,7 +236,7 @@ FROM PlayerSchema.Players P
     LEFT JOIN AccountSchema.PlayerAccounts PA ON P.PlayerID = PA.PlayerID
     LEFT JOIN AccountSchema.InGamePlayerAccounts IPA ON P.PlayerID = IPA.PlayerID;
 
--- CREATE PROCEDURES
+-- CREATE FUNCTIONS
 
 CREATE OR REPLACE FUNCTION CalculateTotalInGameBalance
 (player_id INT) RETURNS DECIMAL(10, 2) AS 

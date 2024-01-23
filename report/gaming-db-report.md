@@ -30,7 +30,7 @@ Key deliverables from this project include:
 
 The online gaming platform facilitates a variety of features and interactions between players, games, and administrators. Along with this, comes the assumption of key workflows to streamline to sandbox a certain functionality – readily and easily executed when needed. This section outlines the high-level user journeys that the various user groups take to accomplish their objectives within the system.
 
-All user journeys are implemented using PostgreSQL views, functions, and procedures. The advantage of this is that a combination of SQL statements can be modularised and run as a collection, rather than manual execution one by one.
+All user journeys are implemented using PostgreSQL views, functions, and procedures (which are also included). The advantage of this is that a combination of SQL statements can be modularised and run as a collection, rather than manual execution one by one.
 
 Note that this does not mean any UI implementation, as mentioned in [1 Introduction](#1-introduction). Only the relevant business logic is considered.
 
@@ -38,37 +38,124 @@ Note that this does not mean any UI implementation, as mentioned in [1 Introduct
 
 The player dashboard provides an overarching interface where they can view information about their account. Upon logging in, they can see their corresponding player ID, their selected username, and the balance of both their game and in-game accounts.
 
-See []() for details on implementation.
+The supporting view for this is as follows:
+
+```sql
+CREATE VIEW PlayerSchema.PlayerDashboard AS
+SELECT P.PlayerID, P.Username, PA.Balance AS MainAccountBalance
+FROM PlayerSchema.Players P
+    JOIN AccountSchema.PlayerAccounts PA ON P.PlayerID = PA.PlayerID;
+```
 
 ## 2.2 Manager dashboard
 
 The manager dashboard, similar to the player dashboard, provides business-specific analytics and useful performance statistics across aspects of the gaming platform. It means that managers or any administrative roles can make well-informed data-driven decisions that may commercially impact the business. Such information present on the dashboard includes information on all players – their account details and game/in-game balances.
 
-See []() for details on implementation.
+The supporting view for this is as follows:
+
+```sql
+CREATE VIEW EmployeeSchema.ManagerDashboard AS
+SELECT
+    P.PlayerID,
+    P.Username,
+    P.Fullname,
+    P.Email,
+    PA.Balance AS MainAccountBalance,
+    IPA.Balance AS InGameAccountBalance
+FROM PlayerSchema.Players P
+    LEFT JOIN AccountSchema.PlayerAccounts PA ON P.PlayerID = PA.PlayerID
+    LEFT JOIN AccountSchema.InGamePlayerAccounts IPA ON P.PlayerID = IPA.PlayerID;
+```
 
 ## 2.3 Payment history
 
 This functionality enables players to view and reconcile all financial transactions relating to their game and in-game accounts. Since there are different types of transactions with different currencies, the movement of that money creates an auditable trail that should be captured. This financial activity display will consist of the transaction's timestamp, amount, approval status, the game, and the player it concerns.
 
-See []() for details on implementation.
+The supporting view for this is as follows:
+
+```sql
+CREATE VIEW TransactionSchema.TransactionHistory AS
+SELECT
+    GT.GameTransactionID AS TransactionID,
+    P.Username AS PlayerUsername,
+    G.Title AS GameTitle,
+    GT.Amount,
+    GT.TransactionDate,
+    GTA.ApprovalStatus AS TransactionApprovalStatus
+FROM TransactionSchema.GameTransactions GT
+    JOIN PlayerSchema.Players P ON GT.PlayerAccountID = P.PlayerID
+    JOIN GameSchema.Games G ON GT.GameID = G.GameID
+    LEFT JOIN TransactionSchema.GameTransactionApprovals GTA ON GT.GameTransactionID = GTA.GameTransactionID;
+```
 
 ## 2.4 Game catalog
 
 The game catalog showcases the portfolio of all available game titles on the platform that the company advertises. It serves as both a marketing platform as well as players browsing for new games to play. Details about the game, its title, genre, and release date will give players clear expectations. Furthermore, players can rank games by their rating and/or popularity.
 
-See []() for details on implementation.
+The supporting view for this is as follows:
+
+```sql
+CREATE VIEW GameSchema.GameCatalog AS
+SELECT GameID, Title, Genre, ReleaseDate
+FROM GameSchema.Games;
+```
 
 ## 2.5 Approve transactions
 
 This is mainly for managers to review and authorise privileged transactions on the gaming platform. Requiring manager approval before allowing transfers over secure communications is vital for a streamlined gaming platform and provides an additional point of control. This will set the transaction's status in transit to be set to "Approved" status and signed off by the relevant employee – who must be a manager of course.
 
-See []() for details on implementation.
+The supporting function for this is as follows:
+
+```sql
+CREATE OR REPLACE FUNCTION ApproveGameTransaction(transaction_id
+INT, approver_id INT) RETURNS VOID AS
+$$
+BEGIN
+    UPDATE TransactionSchema.GameTransactionApprovals
+    SET
+    ApprovalStatus = 'Approved'
+    WHERE
+        GameTransactionID = transaction_id
+        AND EmployeeID = approver_id;
+END;
+$$
+LANGUAGE
+plpgsql;
+```
 
 ## 2.6 Purchase games
 
 This user journey is the core monetisation point of the platform, allowing players to select a specific game from the Game Catalog for example. Once a player decides which game they would like to purchase, it appropriately debits and updates their balance, whilst also making a new transaction record. Upon buying and downloading, post-processing actions may be distributing the required license keys or download links. A payment receipt is also returned to the user with the right details.
 
-See []() for details on implementation.
+The supporting procedure for this is as follows:
+
+```sql
+CREATE OR REPLACE PROCEDURE ProcessGamePurchase(player_id
+INT, game_id INT, purchase_amount DECIMAL(10, 2)) AS
+$$
+BEGIN
+    BEGIN
+        UPDATE AccountSchema.PlayerAccounts
+        SET
+            Balance = Balance - purchase_amount
+        WHERE
+            PlayerID = player_id;
+        INSERT INTO
+            TransactionSchema.GameTransactions (
+                PlayerAccountID, GameID, Amount
+            )
+        VALUES (
+                player_id, game_id, purchase_amount
+            );
+        COMMIT;
+        EXCEPTION WHEN OTHERS THEN ROLLBACK;
+        RAISE;
+    END;
+END;
+$$
+LANGUAGE
+plpgsql;
+```
 
 # 3 Data model implementation
 
@@ -458,10 +545,6 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ESportsSchema TO ManagerRole;
 ```
 
 Tournaments need to be conducted by administrators, i.e. managers, so they need to be able to have insight into registration trends, event data, and prize pools to allow for more engagement.
-
-## 3.6 Views
-
-## 3.7 Functions and procedures
 
 # 4 GDPR compliance
 
