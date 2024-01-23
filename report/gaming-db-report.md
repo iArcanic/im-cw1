@@ -104,13 +104,15 @@ CREATE TABLE IF NOT EXISTS PlayerSchema.Players (
 );
 ```
 
-The `Players` table stores personal information about their user, which is categoried as sensitive. The `Password` attribute will undoubtedly be hashed with a robust cryptographic function. `Fullname` can serve as a secondary index to quickly search players. `DateOfBirth` can serve as a restriction when purchasing games with an "18+" age rating for example. Finally, `Email`` is how the online gaming platform contacts the user and is the primary source of contact.
+The `Players` table stores personal information about their users, which is categorised as sensitive. The `Password` attribute will undoubtedly be hashed with a robust cryptographic function. `Fullname` can serve as a secondary index to quickly search players. `DateOfBirth` can serve as a restriction when purchasing games with an "18+" age rating for example. Finally, `Email`` is how the online gaming platform contacts the user and is the primary source of contact.
 
 ### 3.2.2 Accounts schema
 
 ```sql
 CREATE SCHEMA AccountSchema;
 ```
+
+The purpose of this schema is to hold tables relating to accounts, being an internal ledger and allowing the tracking of funds for purchasing games and also purchases for using in-game funds – it always has the Player's most up-to-date balance. Since personal data is segregated, these tables only store the minimal information required, and therefore, role permissions can be more specific.
 
 #### 3.2.2.1 PlayerAccounts
 
@@ -121,6 +123,8 @@ CREATE TABLE IF NOT EXISTS AccountSchema.PlayerAccounts (
     Balance DECIMAL(10, 2) DEFAULT 0.00
 );
 ```
+
+The `PlayerAccounts` table is mainly for purchases of the actual games advertised by the online gaming platform itself. Obviously, it takes a unique ID as `PlayerAccountID`, but more importantly, a foreign key relationship to the `PlayerSchema.Players` table – linking the `Player` entity. This means that registered accounts will have a relationship with the player and thus can access their personal data (only permitted attributes) if necessary. Finally, the `Balance` attribute always stores the most updated value, with a default of 0 on creation.
 
 #### 3.2.2.2 InGamePlayerAccounts
 
@@ -133,6 +137,8 @@ CREATE TABLE IF NOT EXISTS AccountSchema.InGamePlayerAccounts (
     UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+
+This table is when the player makes an account specific only to that game. As seen in the above SQL statements, a unique ID `InGamePlayerAccountID` is required. As previously, it has a foreign key relationship with the `Player` if access to the player's information is needed. It also has a foreign key relationship to the specific game via `GameID` as it needs to store a `Balance` of that game's currency. Finally, the last attribute `UpdatedDate`, takes the current timestamp of when the `Balance` was updated.
 
 ### 3.2.3 GameSchema
 
@@ -282,13 +288,11 @@ CREATE TABLE IF NOT EXISTS ESportsSchema.TournamentResults (
 );
 ```
 
-## 3.3 Entity relationships
+## 3.5 Roles and permissions
 
-## 3.4 Roles and permissions
+## 3.6 Views
 
-## 3.5 Views
-
-## 3.6 Functions and procedures
+## 3.7 Functions and procedures
 
 # 4 GDPR compliance
 
