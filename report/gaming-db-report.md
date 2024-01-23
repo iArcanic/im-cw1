@@ -121,10 +121,11 @@ CREATE TABLE IF NOT EXISTS AccountSchema.PlayerAccounts (
     PlayerAccountID SERIAL PRIMARY KEY,
     PlayerID SERIAL,
     Balance DECIMAL(10, 2) DEFAULT 0.00
+    UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
-The `PlayerAccounts` table is mainly for purchases of the actual games advertised by the online gaming platform itself. Obviously, it takes a unique ID as `PlayerAccountID`, but more importantly, a foreign key relationship to the `PlayerSchema.Players` table – linking the `Player` entity. This means that registered accounts will have a relationship with the player and thus can access their personal data (only permitted attributes) if necessary. Finally, the `Balance` attribute always stores the most updated value, with a default of 0 on creation.
+The `PlayerAccounts` table is mainly for purchases of the actual games advertised by the online gaming platform itself. Obviously, it takes a unique ID as `PlayerAccountID`, but more importantly, a foreign key relationship to the `PlayerSchema.Players` table – linking the `Player` entity. This means that registered accounts will have a relationship with the player and thus can access their personal data (only permitted attributes) if necessary. Next, the `Balance` attribute always stores the most updated value, with a default of 0 on creation. Finally, the `UpdatedDate` field is a timestamp record of when the balance was updated.
 
 #### 3.2.2.2 InGamePlayerAccounts
 
@@ -169,15 +170,26 @@ Like the `Player` entity, the `Game` is also a master table since it has no fore
 CREATE SCHEMA EmployeeSchema;
 ```
 
+This schema constitutes all tables relating to the `Employee` entity, the relevant functionality, and user journeys. Like `Player`, this schema represents another user environment, which also means that personal data associated with them is sandboxed. If additional departments with different purposes are added if the company grows, they can easily be appended to this schema, with different roles and permissions being granted.
+
 #### 3.2.4.1 Employees
 
 ```sql
 CREATE TABLE IF NOT EXISTS EmployeeSchema.Employees (
     EmployeeID SERIAL PRIMARY KEY,
     Username VARCHAR(50) NOT NULL UNIQUE,
-    Fullname VARCHAR(255) NOT NULL
+    Fullname VARCHAR(255) NOT NULL,
+    EmployeeRole EmployeeRole NOT NULL
 );
 ```
+
+Again, like `Player` and `Game`, this is also another master table within the database. As always, a unique ID, `EmployeeID` is taken as the primary key. Additional pieces of sensitive data, i.e. `Username` and `Fullname` give this entity some depth and body.
+
+```sql
+CREATE TYPE EmployeeRole AS ENUM('Employee', 'Manager');
+```
+
+Finally, the `EmployeeRole` field takes on the `EmployeeRole` type, which is an enumeration. It means that this field has to confirm the values specified here only, i.e. a `Manager` or a regular `Employee`.
 
 #### 3.2.4.2 PlayerSupport
 
@@ -190,6 +202,8 @@ CREATE TABLE IF NOT EXISTS EmployeeSchema.PlayerSupport (
     UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+
+This table is akin to a support ticket system, storing details about any players being assisted. The ID as always, `PlayerSupportID`. Two foreign key references to previous tables, linking the `Employee` and `Player`. The `Notes` attribute serves as a description, detailing information about the issue and how it was resolved. Like with tables in `AccountSchema`, an `UpdatedDate` attribute takes the default locale timestamp of when the support ticket was addressed.
 
 ### 3.2.5 TransactionsSchema
 

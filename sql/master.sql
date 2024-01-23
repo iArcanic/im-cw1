@@ -84,7 +84,7 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA EmployeeSchema TO ManagerRole;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ESportsSchema TO ManagerRole;
 
 -- CREATE ENUMS
-CREATE TYPE Role AS ENUM('Employee', 'Manager');
+CREATE TYPE EmployeeRole AS ENUM('Employee', 'Manager');
 
 CREATE TYPE ApprovalStatus AS ENUM(
     'Pending', 'Approved', 'Rejected'
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS PlayerSchema.Players (
 );
 
 CREATE TABLE IF NOT EXISTS AccountSchema.PlayerAccounts (
-    PlayerAccountID SERIAL PRIMARY KEY, PlayerID SERIAL, Balance DECIMAL(10, 2) DEFAULT 0.00
+    PlayerAccountID SERIAL PRIMARY KEY, PlayerID SERIAL, Balance DECIMAL(10, 2) DEFAULT 0.00, UpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS AccountSchema.InGamePlayerAccounts (
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS TransactionSchema.InGameTransactionApprovals (
 );
 
 CREATE TABLE IF NOT EXISTS EmployeeSchema.Employees (
-    EmployeeID SERIAL PRIMARY KEY, Username VARCHAR(50) NOT NULL UNIQUE, Fullname VARCHAR(255) NOT NULL
+    EmployeeID SERIAL PRIMARY KEY, Username VARCHAR(50) NOT NULL UNIQUE, Fullname VARCHAR(255) NOT NULL, EmployeeRole EmployeeRole NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS EmployeeSchema.PlayerSupport (
