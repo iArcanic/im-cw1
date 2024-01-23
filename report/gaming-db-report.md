@@ -11,24 +11,13 @@ csl: report/harvard-imperial-college-london.csl
 
 # 1 Introduction
 
-This report documents the design and relevant implementation details of a GDPR-complaint database system regarding an online gaming platform. The system has the following purposes managing the registration of players and their accounts, handling transactions, and integrating assistance measures via employees or managers.
+This report documents the design and relevant implementation details of a GDPR-complaint database system regarding an online gaming platform. The system has the following purposes managing the registration of players and their accounts, handling transactions, and integrating assistance.
 
-It is important to define the scope of this project and not deviate in the development phase. The focus is solely on the back-end database design and the relevant complaint features when it comes to data protection laws. Elements such as front-end UI optimisation or other customer-facing aspects are therefore out of this scope.
-
-The following sections of this report provide a typical user journey workflow, the entity relationship design diagram, and its counterpart implementation in code (i.e. SQL), any unfinished features, and appropriate recommendations. This is necessary for evaluating how GDPR requirements have been addressed.
-
-## 1.2 Project deliverables
-
-Key deliverables from this project include:
-
-- A normalised PostgreSQL database, with necessary tables, roles, views, functions, and procedures.
-- An executable SQL script containing all the statements needed to meet organisation requirements.
-- An entity relationship diagram to visually detail the relationships between entities.
-- A configuration folder with security access controls when launching the database.
+It is important to define the scope of this project and not deviate in the development phase. The focus is solely on the back-end database design and the relevant features when it comes to data protection laws. Elements such as front-end UI optimisation are therefore out of this scope.
 
 # 2 User journeys
 
-The online gaming platform facilitates a variety of features and interactions between players, games, and administrators. Along with this, comes the assumption of key workflows to streamline to sandbox a certain functionality – readily and easily executed when needed. This section outlines the high-level user journeys that the various user groups take to accomplish their objectives within the system.
+The online gaming platform facilitates a variety of features and interactions between players, games, and administrators. Along with this, comes the assumption of key workflows to streamline to sandbox a certain functionality – readily and easily executed when needed. This section outlines the high-level user journeys taken to accomplish their objectives within the system.
 
 All user journeys are implemented using PostgreSQL views, functions, and procedures (which are also included). The advantage of this is that a combination of SQL statements can be modularised and run as a collection, rather than manual execution one by one.
 
@@ -167,7 +156,7 @@ See Appendix []() for the ERD.
 
 ## 3.2 Entities
 
-The core entities identified for this scenario are separated into distinct categories called schema. Each schema is a collection of these database entities. It helps to assign specific roles to a certain schema, visually clarify the purpose and belonging of entities, and can be managed much more easily.
+The core entities identified for this scenario are separated into distinct categories called schema. Each schema is a collection of these database entities. It helps to assign specific roles to a certain schema, visually clarify the purpose and belonging of entities.
 
 ### 3.2.1 Player schema
 
@@ -548,9 +537,11 @@ Tournaments need to be conducted by administrators, i.e. managers, so they need 
 
 # 4 GDPR compliance
 
-Several database designs and they equivalent PostgreSQL implementations have been taken into consideration to ensure General Data Protection Regulation (GDPR) compliance, but the most important is encryption.
+## 4.1 Encryption
 
-As mentioned before, although it is outside the scope of the implementation requirements, the hashing function will encrypt the password ([see 3.2.2.1 Players](#3221-players)).
+Several database designs and they equivalent PostgreSQL implementations have been taken into consideration to ensure General Data Protection Regulation (GDPR) compliance.
+
+As mentioned before, although it is outside the scope of the implementation requirements, the hashing function will encrypt the password ([see 3.2.2.1 Players](#3221-players)). However, encryption should also apply to the email and customer IDs.
 
 However, within the `postgresql.conf` file, appropriate encryption options have been added:
 
@@ -568,6 +559,10 @@ krb_server_keyfile = '/path/to/krb5.keytab'
 ```
 
 These relevant arguments ensure that the database is encrypted, however, it is up to the PostgreSQL user to provide their own encryption keys.
+
+## 4.2 Data storage and deletion
+
+Although not implemented, personal data should be deleted periodically after a set limit. This would be done as procedure, only being run by administrators. For example, if the company has over 250 employees then it should be a regulation to deal with personal data with a specific privacy officer. Furthermore, data only relating to the functionality of the game company and business activities should be stored. In the case that personal data is stored, then affirmative consent should be displayed.
 
 # 5 Appendices
 
