@@ -341,16 +341,63 @@ As before, here is an enumeration for each teams result status. Currently, it ha
 
 ## 3.5 Roles and permissions
 
+Each `GRANT` statement only allows a narrow scope of privileges fitting the context of the entity. This supports the idea of the least privilege principle, allowing for a more secure database and limiting unathorised access. This mapping in the backend can give a good approximation in how that specific entity will legally interact with the system, allowing for a good balance in usability and data protection.
+
 ### 3.5.1 PlayerRole
 
 ```sql
 CREATE ROLE PlayerRole;
 ```
 
+The `PlayerRole` role represents authenticated end-users of the online gaming platform, i.e. those who have registered profiles and carry out typical system actions, such as interacting with offered game titles, purchasing games, and so on.
+
+```sql
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES
+IN SCHEMA PlayerSchema TO PlayerRole;
+```
+
+Here, the `PlayerRole` has access to the `PlayerSchema` which contains the `Player` entity. To comply with GDPR the following SQL statements allow the player view and edit their own personal information.
+
+```sql
+GRANT SELECT ON ALL TABLES
+IN SCHEMA GameSchema TO PlayerRole;
+```
+
+Here however, only the `SELECT` command is given for this schema. It makes sense for Players to be unable to modify available games and details (restricted to Managers (see [3.5.3 `ManagerRole`](#353-managerrole))), but only to view the game catalog to purchase titles.
+
+```sql
+GRANT SELECT ON ALL TABLES
+IN SCHEMA ESportsSchema TO PlayerRole;
+```
+
+Similarly, Players are only allowed to view any `Tournaments`, `Teams`, and the respective `TeamPlayers` and not edit details – which is for Managers to do so (see [3.5.3 `ManagerRole`](#353-managerrole)).
+
 ### 3.5.2 EmployeeRole
 
 ```sql
 CREATE ROLE EmployeeRole;
+```
+
+This represents all least privileged personnel who run the
+
+```sql
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES
+IN SCHEMA EmployeeSchema TO EmployeeRole;
+```
+
+```sql
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES
+IN SCHEMA PlayerSchema TO EmployeeRole;
+```
+
+```sql
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES
+IN SCHEMA AccountSchema TO EmployeeRole;
+```
+
+```sql
+GRANT SELECT, INSERT ON ALL TABLES
+IN SCHEMA TransactionSchema TO EmployeeRole;
 ```
 
 ### 3.5.3 ManagerRole
