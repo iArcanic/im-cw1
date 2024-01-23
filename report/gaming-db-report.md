@@ -341,6 +341,24 @@ As before, here is an enumeration for each teams result status. Currently, it ha
 
 ## 3.5 Roles and permissions
 
+### 3.5.1 PlayerRole
+
+```sql
+CREATE ROLE PlayerRole;
+```
+
+### 3.5.2 EmployeeRole
+
+```sql
+CREATE ROLE EmployeeRole;
+```
+
+### 3.5.3 ManagerRole
+
+```sql
+CREATE ROLE ManagerRole;
+```
+
 ## 3.6 Views
 
 ## 3.7 Functions and procedures
