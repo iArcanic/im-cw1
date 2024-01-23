@@ -408,11 +408,56 @@ IN SCHEMA TransactionSchema TO EmployeeRole;
 
 For the `TransactionSchema`, the `SELECT` and `INSERT` role is only granted – for auditing reasons. This is to trace failed or fraudulent transactions and update their status accordingly.
 
+```sql
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES
+IN SCHEMA ESportsSchema TO EmployeeRole;
+```
+
+This allows the employees to conduct the appropriate processing operations and visibility into tournaments statistics and using the event data to improve esports in the future. Any improvements that are made require commands such as `INSERT` and `UPDATE`, since employees are the tournament admins and overseers.
+
 ### 3.5.3 ManagerRole
 
 ```sql
 CREATE ROLE ManagerRole;
 ```
+
+As alluded to from before, the `ManagerRole` is the most privileged role within the online gaming platform infrastructure. These are akin to executives who govern the major areas of the platform's business operations and conduct a relevant strategy. Since this is the case, the highest level of privilege means complete visibility and control as per their responsibilities.
+
+```sql
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PlayerSchema TO ManagerRole;
+```
+
+The `Manager` role is granted full access to customer data, player profiles, activity, transaction history, and support tickets. This data is therefore key in understanding user behavior and as such, optimise the gaming platform.
+
+```sql
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA AccountSchema TO ManagerRole;
+```
+
+This allows for complete visibility into all financial data, balances across different games to spot revenue patterns for potentially optimising what game titles are advertised.
+
+```sql
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA GameSchema TO ManagerRole;
+```
+
+Any new games that the platform decides to implement will only be updated by the manager. Furthermore, game trends and metrics can help with monetisation strategies – for choosing future game titles.
+
+```sql
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA TransactionSchema TO ManagerRole;
+```
+
+Allows investigation of trends into fraudulent or suspicious payments and allows for risk analysis. Securing payment integrity is vital since sensitive information and money is being moved.
+
+```sql
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA EmployeeSchema TO ManagerRole;
+```
+
+Managers also have the ability to manage employees working under them, so visibility is required into the team members, productivity metrics, what roles employees have, and permissions that may need updating in the long-term.
+
+```sql
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ESportsSchema TO ManagerRole;
+```
+
+Tournaments need to be conducted by administrators, i.e. managers, so they need to be able to have insight into registration trends, event data, and prize pools to allow for more engagement.
 
 ## 3.6 Views
 
