@@ -138,7 +138,7 @@ plpgsql;
 
 The data model was designed using an Entity-Relationship Diagram (ERD) approach, which helps to represent the key entities and define the relationships between them.
 
-See Appendix []() for the ERD.
+See Appendix [5.2](#52-erd-diagram) for the ERD.
 
 ## 3.2 Entities
 
@@ -554,4 +554,6 @@ Although not implemented, personal data should be deleted periodically after a s
 
 [Gaming Platform Database Backend (im-cw1)](https://github.com/iArcanic/im-cw1)
 
-# 6 References
+## 5.2 ERD diagram
+
+![ERD diagram](images/erd-diagram.png)

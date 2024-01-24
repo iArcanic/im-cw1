@@ -164,6 +164,12 @@ ADD CONSTRAINT fk_GameID_InGamePlayerAccounts FOREIGN KEY (GameID) REFERENCES Ga
 ALTER TABLE TransactionSchema.GameTransactions
 ADD CONSTRAINT fk_PlayerAccountID_GameTransactions FOREIGN KEY (PlayerAccountID) REFERENCES AccountSchema.PlayerAccounts (PlayerAccountID);
 
+ALTER TABLE EmployeeSchema.PlayerSupport
+ADD CONSTRAINT fk_PlayerID_PlayerSupport FOREIGN KEY (PlayerID) REFERENCES PlayerSchema.Players (PlayerID);
+
+ALTER TABLE EmployeeSchema.PlayerSupport
+ADD CONSTRAINT fk_EmployeeID_PlayerSupport FOREIGN KEY (EmployeeID) REFERENCES EmployeeSchema.Employees (EmployeeID);
+
 ALTER TABLE TransactionSchema.GameTransactions
 ADD CONSTRAINT fk_GameID_GameTransactions FOREIGN KEY (GameID) REFERENCES GameSchema.Games (GameID);
 
