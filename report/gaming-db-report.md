@@ -13,21 +13,17 @@ csl: report/harvard-imperial-college-london.csl
 
 This report documents the design and relevant implementation details of a GDPR-complaint database system regarding an online gaming platform. The system has the following purposes managing the registration of players and their accounts, handling transactions, and integrating assistance.
 
-It is important to define the scope of this project and not deviate in the development phase. The focus is solely on the back-end database design and the relevant features when it comes to data protection laws. Elements such as front-end UI optimisation are therefore out of this scope.
+It is important to define the scope of this project and not deviate in the development phase. The focus is solely on the back-end when it comes to data protection laws. Elements such as front-end UI optimisation are therefore out of this scope.
 
 # 2 User journeys
 
-The online gaming platform facilitates a variety of features and interactions between players, games, and administrators. Along with this, comes the assumption of key workflows to streamline to sandbox a certain functionality – readily and easily executed when needed. This section outlines the high-level user journeys taken to accomplish their objectives within the system.
+The online gaming platform facilitates a variety of features and interactions between players, games, and administrators. Along with this, comes the assumption of key workflows to streamline and sandbox a certain functionality.
 
 All user journeys are implemented using PostgreSQL views, functions, and procedures (which are also included). The advantage of this is that a combination of SQL statements can be modularised and run as a collection, rather than manual execution one by one.
-
-Note that this does not mean any UI implementation, as mentioned in [1 Introduction](#1-introduction). Only the relevant business logic is considered.
 
 ## 2.1 Player dashboard
 
 The player dashboard provides an overarching interface where they can view information about their account. Upon logging in, they can see their corresponding player ID, their selected username, and the balance of both their game and in-game accounts.
-
-The supporting view for this is as follows:
 
 ```sql
 CREATE VIEW PlayerSchema.PlayerDashboard AS
@@ -39,8 +35,6 @@ FROM PlayerSchema.Players P
 ## 2.2 Manager dashboard
 
 The manager dashboard, similar to the player dashboard, provides business-specific analytics and useful performance statistics across aspects of the gaming platform. It means that managers or any administrative roles can make well-informed data-driven decisions that may commercially impact the business. Such information present on the dashboard includes information on all players – their account details and game/in-game balances.
-
-The supporting view for this is as follows:
 
 ```sql
 CREATE VIEW EmployeeSchema.ManagerDashboard AS
@@ -59,8 +53,6 @@ FROM PlayerSchema.Players P
 ## 2.3 Payment history
 
 This functionality enables players to view and reconcile all financial transactions relating to their game and in-game accounts. Since there are different types of transactions with different currencies, the movement of that money creates an auditable trail that should be captured. This financial activity display will consist of the transaction's timestamp, amount, approval status, the game, and the player it concerns.
-
-The supporting view for this is as follows:
 
 ```sql
 CREATE VIEW TransactionSchema.TransactionHistory AS
@@ -81,8 +73,6 @@ FROM TransactionSchema.GameTransactions GT
 
 The game catalog showcases the portfolio of all available game titles on the platform that the company advertises. It serves as both a marketing platform as well as players browsing for new games to play. Details about the game, its title, genre, and release date will give players clear expectations. Furthermore, players can rank games by their rating and/or popularity.
 
-The supporting view for this is as follows:
-
 ```sql
 CREATE VIEW GameSchema.GameCatalog AS
 SELECT GameID, Title, Genre, ReleaseDate
@@ -91,9 +81,7 @@ FROM GameSchema.Games;
 
 ## 2.5 Approve transactions
 
-This is mainly for managers to review and authorise privileged transactions on the gaming platform. Requiring manager approval before allowing transfers over secure communications is vital for a streamlined gaming platform and provides an additional point of control. This will set the transaction's status in transit to be set to "Approved" status and signed off by the relevant employee – who must be a manager of course.
-
-The supporting function for this is as follows:
+This is mainly for managers to review and authorise privileged transactions on the gaming platform. Requiring manager approval before allowing transfers over secure communications is vital for a streamlined gaming platform and provides an additional point of control. This will set the transaction's status in transit to be set to "Approved" status.
 
 ```sql
 CREATE OR REPLACE FUNCTION ApproveGameTransaction(transaction_id
@@ -114,9 +102,7 @@ plpgsql;
 
 ## 2.6 Purchase games
 
-This user journey is the core monetisation point of the platform, allowing players to select a specific game from the Game Catalog for example. Once a player decides which game they would like to purchase, it appropriately debits and updates their balance, whilst also making a new transaction record. Upon buying and downloading, post-processing actions may be distributing the required license keys or download links. A payment receipt is also returned to the user with the right details.
-
-The supporting procedure for this is as follows:
+This user journey is the core monetisation point of the platform, allowing players to select a specific game from the Game Catalog for example. Once a player decides which game they would like to purchase, it appropriately debits and updates their balance, whilst also making a new transaction record
 
 ```sql
 CREATE OR REPLACE PROCEDURE ProcessGamePurchase(player_id
@@ -156,7 +142,7 @@ See Appendix []() for the ERD.
 
 ## 3.2 Entities
 
-The core entities identified for this scenario are separated into distinct categories called schema. Each schema is a collection of these database entities. It helps to assign specific roles to a certain schema, visually clarify the purpose and belonging of entities.
+The core entities identified for this scenario are separated into distinct categories called schema. Each schema is a collection of these database entities. It helps to assign specific roles to a certain schema.
 
 ### 3.2.1 Player schema
 
@@ -164,7 +150,7 @@ The core entities identified for this scenario are separated into distinct categ
 CREATE SCHEMA PlayerSchema;
 ```
 
-This database schema is dedicated to holding user-entity tables, such as `Players` in this instance. The main aim is to segregate personal data, which may be sensitive and cannot traverse across a span of tables or be accessed by unathorised roles. Allows for easier management of access controls and security policies due to there being only a singular table, and thus, more readily abide by GDPR laws.
+This database schema is dedicated to holding user-entity tables, such as `Players` in this instance. The main aim is to segregate personal data, which may be sensitive or be accessed by unathorised roles. Allows for easier management of access controls and security policies due to there being only a singular table, and thus, more readily abide by GDPR laws.
 
 #### 3.2.2.1 Players
 
@@ -180,7 +166,7 @@ CREATE TABLE IF NOT EXISTS PlayerSchema.Players (
 );
 ```
 
-The `Players` table stores personal information about their users, which is categorised as sensitive. The `Password` attribute will undoubtedly be hashed with a robust cryptographic function. `Fullname` can serve as a secondary index to quickly search players. `DateOfBirth` can serve as a restriction when purchasing games with an "18+" age rating for example. Finally, `Email`` is how the online gaming platform contacts the user and is the primary source of contact.
+The `Players` table stores personal information about their users, which is categorised as sensitive. The `Password` attribute will undoubtedly be hashed with a robust cryptographic function. `Fullname` can serve as a secondary index to quickly search players. `DateOfBirth` can serve as a restriction when purchasing games with an "18+" age rating for example. Finally, `Email` is how the online gaming platform contacts the user.
 
 ### 3.2.2 Accounts schema
 
@@ -188,7 +174,7 @@ The `Players` table stores personal information about their users, which is cate
 CREATE SCHEMA AccountSchema;
 ```
 
-The purpose of this schema is to hold tables relating to accounts, being an internal ledger and allowing the tracking of funds for purchasing games and also purchases for using in-game funds – it always has the Player's most up-to-date balance. Since personal data is segregated, these tables only store the minimal information required, and therefore, role permissions can be more specific.
+The purpose of this schema is to hold tables relating to accounts, being an internal ledger and allowing the tracking of funds for purchasing and always has the Player's most up-to-date balance. Since personal data is segregated, these tables only store the minimal information required.
 
 #### 3.2.2.1 PlayerAccounts
 
@@ -215,7 +201,7 @@ CREATE TABLE IF NOT EXISTS AccountSchema.InGamePlayerAccounts (
 );
 ```
 
-This table is when the player makes an account specific only to that game. As seen in the above SQL statements, a unique ID `InGamePlayerAccountID` is required. As previously, it has a foreign key relationship with the `Player` if access to the player's information is needed. It also has a foreign key relationship to the specific game via `GameID` as it needs to store a `Balance` of that game's currency. Finally, the last attribute `UpdatedDate`, takes the current timestamp of when the `Balance` was updated.
+This table is exactly similar to `PlayerAccount`, but instead, it is game specific, since it takes a foreign key relationship with a game additionally.
 
 ### 3.2.3 GameSchema
 
@@ -223,7 +209,7 @@ This table is when the player makes an account specific only to that game. As se
 CREATE SCHEMA GameSchema;
 ```
 
-The `GameSchema`, similar to the `PlayerSchema`, only has one table and this is beneficial in assigning only the relevant permissions required. Any game-related tables are under this schema, making it only more scalable in the future, if the company decides to incorporate more game-specific features. This means that other schemas are not affected and disturbed – the roles, permissions, and relationships remain the same regardless.
+The `GameSchema`, only has one table and this is beneficial in assigning only the relevant permissions required. Any game-related tables are under this schema, making it only more scalable in the future.
 
 #### 3.2.3.1 Games
 
@@ -238,7 +224,7 @@ CREATE TABLE IF NOT EXISTS GameSchema.Games (
 );
 ```
 
-Like the `Player` entity, the `Game` is also a master table since it has no foreign key relations. A unique ID of `GameID` differentiates each `Game`. A `Title` by which the game is referenced, and can even serve as a secondary index for fast searching. The `Rating`, `Genre`, and `ReleaseDate` properties are fields by which the user can filter for games easily (see [2.4 Game catalog](#24-game-catalog)).
+Like the `Player` entity, the `Game` is also a master table since it has no foreign key relations. A unique ID of `GameID` differentiates each `Game`. A `Title` by which the game is referenced, and can even serve as a secondary index. The `Rating`, `Genre`, and `ReleaseDate` properties are fields by which the user can filter for games easily (see [2.4 Game catalog](#24-game-catalog)).
 
 ### 3.2.4 EmployeeSchema
 
@@ -246,7 +232,7 @@ Like the `Player` entity, the `Game` is also a master table since it has no fore
 CREATE SCHEMA EmployeeSchema;
 ```
 
-This schema constitutes all tables relating to the `Employee` entity, the relevant functionality, and user journeys. Like `Player`, this schema represents another user environment, which also means that personal data associated with them is sandboxed. If additional departments with different purposes are added if the company grows, they can easily be appended to this schema, with different roles and permissions being granted.
+This schema constitutes all tables relating to the `Employee` entity, the relevant functionality, and user journeys. Like `Player`, this schema represents another user environment, which also means that personal data associated with them is sandboxed.
 
 #### 3.2.4.1 Employees
 
@@ -279,7 +265,7 @@ CREATE TABLE IF NOT EXISTS EmployeeSchema.PlayerSupport (
 );
 ```
 
-This table is akin to a support ticket system, storing details about any players being assisted. The ID as always, `PlayerSupportID`. Two foreign key references to previous tables, linking the `Employee` and `Player`. The `Notes` attribute serves as a description, detailing information about the issue and how it was resolved. Like with tables in `AccountSchema`, an `UpdatedDate` attribute takes the default locale timestamp of when the support ticket was addressed.
+This table is akin to a support ticket system, storing details about any players being assisted. The ID as always, `PlayerSupportID`. Two foreign key references to previous tables, linking the `Employee` and `Player`. The `Notes` attribute serves as a description, detailing information about the issue and how it was resolved. The `UpdatedDate` attribute takes the default locale timestamp of when the support ticket was addressed.
 
 ### 3.2.5 TransactionsSchema
 
@@ -325,7 +311,7 @@ CREATE TABLE IF NOT EXISTS TransactionSchema.GameTransactionApprovals (
 );
 ```
 
-Here, this table consists of the approval for transactions for the games only, made with real-life money of course. Foreign key relations are defined, linking the correct `GameTransaction` that needs approval, the assigned `Employee` (a `Manager`), and the date timestamp. it was approved, via `UpdatedDate`.
+Here, this table consists of the approval for transactions for the games only, made with real-life money of course. Foreign key relations are defined, linking the correct `GameTransaction` that needs approval, the assigned `Employee` (a `Manager`), and the date timestamp.
 
 ```sql
 CREATE TYPE ApprovalStatus AS ENUM(
@@ -333,7 +319,7 @@ CREATE TYPE ApprovalStatus AS ENUM(
 );
 ```
 
-An enumeration is created for the `ApprovalStatus`, meaning that it can only take one of the three above states. Only a `Manager` can alter the transaction state, and if so, it has to conform to these three values, with a default state of "Pending" if not yet approved by a `Manager`.
+An enumeration is created for the `ApprovalStatus`, meaning that it can only take one of the three above states. Only a `Manager` can alter the transaction state, and if so, it has to conform to these three values.
 
 #### 3.2.5.4 InGameTransactionApprovals
 
@@ -355,7 +341,7 @@ Again, similar to `GameTransactionApprovals` (see [3.2.5.3 GameTransactionApprov
 CREATE SCHEMA ESportsSchema;
 ```
 
-Although this schema is not vital to the regular functioning of the online gaming system, it serves more as a proof of concept demonstrating the scalability of such a database design. The schema is to do with the more competitive side that the gaming platform may want to feature along with the many games that they have. This takes inspiration from real e-sports tournaments, the way that they are structures, and the way that they are conducted.
+Although this schema is not vital to the regular functioning of the online gaming system, it serves more as a proof of concept demonstrating the scalability of such a database design.
 
 #### 3.2.6.1 Tournaments
 
@@ -413,11 +399,11 @@ CREATE TYPE TournamentResultStatus AS ENUM(
 );
 ```
 
-As before, here is an enumeration for each teams result status. Currently, it has been set to these four values – which the attribute in the table has to conform to, however, this can easily be scalable. More result parameters can be added as and when required, such as more finishing positions or a Prize enumeration.
+Here is an enumeration for each teams result status. Currently, it has been set to these four values – which the attribute in the table has to conform to, however, this can easily be scalable. More result parameters can be added as and when required.
 
 ## 3.5 Roles and permissions
 
-Each `GRANT` statement only allows a narrow scope of privileges fitting the context of the entity. This supports the idea of the least privilege principle, allowing for a more secure database and limiting unathorised access. This mapping in the backend can give a good approximation in how that specific entity will legally interact with the system, allowing for a good balance in usability and data protection.
+Each `GRANT` statement only allows a narrow scope of privileges fitting the context of the entity. This supports the idea of the least privilege principle. This mapping in the backend can give a good approximation in how that specific entity will legally interact with the system.
 
 ### 3.5.1 PlayerRole
 
@@ -425,7 +411,7 @@ Each `GRANT` statement only allows a narrow scope of privileges fitting the cont
 CREATE ROLE PlayerRole;
 ```
 
-The `PlayerRole` role represents authenticated end-users of the online gaming platform, i.e. those who have registered profiles and carry out typical system actions, such as interacting with offered game titles, purchasing games, and so on.
+The `PlayerRole` role represents authenticated end-users of the online gaming platform, i.e. those who have registered profiles and carry out typical system actions, such as interacting with offered game titles.
 
 ```sql
 GRANT SELECT, INSERT, UPDATE ON ALL TABLES
@@ -454,7 +440,7 @@ Similarly, Players are only allowed to view any `Tournaments`, `Teams`, and the 
 CREATE ROLE EmployeeRole;
 ```
 
-This represents all least privileged personnel who run the gaming platform that run various business support operations, such as player assistance, player account management, security audits, and payment administration. They have a wider scope of privileges, but still restricted (they are not the most privileged role).
+This represents all least privileged personnel who run the gaming platform that run various business support operations, such as player assistance, player account management, security audits, and payment administration.
 
 ```sql
 GRANT SELECT, INSERT, UPDATE ON ALL TABLES
@@ -468,7 +454,7 @@ GRANT SELECT, INSERT, UPDATE ON ALL TABLES
 IN SCHEMA PlayerSchema TO EmployeeRole;
 ```
 
-Employees are also given full access to the `PlayerSchema` table, since the employees assist players with any issues. This also means that they need access to the player's data so they can use usage trends and metric for company improvements.
+Employees are also given full access to the `PlayerSchema` table, since the employees assist players with any issues. This also means that they need access to the player's data so they can use usage trends.
 
 ```sql
 GRANT SELECT, INSERT, UPDATE ON ALL TABLES
@@ -497,7 +483,7 @@ This allows the employees to conduct the appropriate processing operations and v
 CREATE ROLE ManagerRole;
 ```
 
-As alluded to from before, the `ManagerRole` is the most privileged role within the online gaming platform infrastructure. These are akin to executives who govern the major areas of the platform's business operations and conduct a relevant strategy. Since this is the case, the highest level of privilege means complete visibility and control as per their responsibilities.
+As alluded to from before, the `ManagerRole` is the most privileged role within the online gaming platform infrastructure. These are akin to executives who govern the major areas of the platform's business operations and conduct a relevant strategy.
 
 ```sql
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PlayerSchema TO ManagerRole;
@@ -533,13 +519,11 @@ Managers also have the ability to manage employees working under them, so visibi
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ESportsSchema TO ManagerRole;
 ```
 
-Tournaments need to be conducted by administrators, i.e. managers, so they need to be able to have insight into registration trends, event data, and prize pools to allow for more engagement.
+Tournaments need to be conducted by administrators, i.e. managers, so they need to be able to have insight relevant metrics.
 
 # 4 GDPR compliance
 
 ## 4.1 Encryption
-
-Several database designs and they equivalent PostgreSQL implementations have been taken into consideration to ensure General Data Protection Regulation (GDPR) compliance.
 
 As mentioned before, although it is outside the scope of the implementation requirements, the hashing function will encrypt the password ([see 3.2.2.1 Players](#3221-players)). However, encryption should also apply to the email and customer IDs.
 
@@ -562,7 +546,7 @@ These relevant arguments ensure that the database is encrypted, however, it is u
 
 ## 4.2 Data storage and deletion
 
-Although not implemented, personal data should be deleted periodically after a set limit. This would be done as procedure, only being run by administrators. For example, if the company has over 250 employees then it should be a regulation to deal with personal data with a specific privacy officer. Furthermore, data only relating to the functionality of the game company and business activities should be stored. In the case that personal data is stored, then affirmative consent should be displayed.
+Although not implemented, personal data should be deleted periodically after a set limit. This would be done as procedure, only being run by administrators. For example, if the company has over 250 employees then it should be a regulation to deal with personal data with a specific privacy officer. Furthermore, data only relating to the functionality of the game company and business activities should be stored.
 
 # 5 Appendices
 
